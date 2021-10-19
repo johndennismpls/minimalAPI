@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.Add
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +30,9 @@ app.MapGet("/customer", (ICustomerService customerService, int id) => {
     return customerService.GetCustomer(id);
 });
 
+app.MapPost("/customer", (ICustomerService customerService, Customer id) => {
+    return customerService.AddCustomer(id);
+});
 
 
 app.Run();

@@ -1,8 +1,20 @@
 public class CustomerRepository : ICustomerRepository
 {
-    public Task<Customer> GetCustomer(int customerId)
+    MinimalApiDbContext _dbcontext;
+
+    public CustomerRepository(MinimalApiDbContext dbcontext)
     {
-        var customer = new Customer { CustomerId = customerId, GivenName = "John", FamilyName = "Dennis" };
-        return Task.FromResult(customer);
+        _dbcontext = dbcontext;
+    }
+
+    public async Task<Customer> GetCustomer(int customerId)
+    {
+        var customer = await _dbcontext.Customers.FindAsync(customerId);
+        return customer;
+    }
+
+    public void AddCustomer(Customer customer)
+    {
+        _dbcontext.Add(customer);
     }
 }

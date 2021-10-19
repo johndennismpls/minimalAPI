@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 public class MinimalApiDbContext : DbContext
@@ -17,6 +16,6 @@ public class MinimalApiDbContext : DbContext
         optionsBuilder.UseSqlServer("Server=localhost;Database=MinimalApi;Trusted_Connection=True;MultipleActiveResultSets=true");
     }
 
-    public DbSet<Customer>? Customers { get; set; }
+    public DbSet<Customer> Customers { get; set; }
 
 }
