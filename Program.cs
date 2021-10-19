@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.Add
@@ -6,6 +8,9 @@ builder.Services.AddTransient<ICustomerService, CustomerService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MinimalApiDbContext>(
+        options => options.UseSqlServer("Server=localhost;Database=MinimalApi;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
 var app = builder.Build();
 
@@ -16,6 +21,8 @@ if(!builder.Environment.IsProduction())
     app.UseSwagger();
 }
 
+
+//routes
 app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/customer", (ICustomerService customerService, int id) => {
