@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 
+
+#pragma warning disable CS8618
 public class MinimalApiDbContext : DbContext
 {
     public MinimalApiDbContext() : base()
     {
-
     }
 
     public MinimalApiDbContext(DbContextOptions options) : base(options)
