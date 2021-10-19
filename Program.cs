@@ -10,12 +10,15 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 //Configure
-app.UseSwagger();
-app.UseSwaggerUI();
+if(!builder.Environment.IsProduction())
+{
+    app.UseSwaggerUI();
+    app.UseSwagger();
+}
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/customer{id}", (ICustomerService customerService, int id) => {
+app.MapGet("/customer", (ICustomerService customerService, int id) => {
     return customerService.GetCustomer(id);
 });
 
