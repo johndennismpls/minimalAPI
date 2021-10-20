@@ -14,9 +14,21 @@ public class CustomerService : ICustomerService
         return _customerRepository.GetCustomer(customerId);
     }
 
-    public async Task AddCustomer(Customer customer)
+    public async Task AddCustomer(AddCustomerRequest customer)
     {
         _customerRepository.AddCustomer(customer);
         await _applicationRepository.SaveChangesAsync();
     }
+
+    public Task<IReadOnlyCollection<Customer>> GetCustomers()
+    {
+        return _customerRepository.GetCustomers();
+    }
+
+    public async Task UpdateCustomerAsync(UpdateCustomerRequest request)
+    {
+        await _customerRepository.UpdateCustomer(request);
+        await _applicationRepository.SaveChangesAsync();
+    }
+
 }

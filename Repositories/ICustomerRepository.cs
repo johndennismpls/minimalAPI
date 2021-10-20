@@ -1,5 +1,7 @@
 public interface ICustomerRepository
 {
     Task<Customer> GetCustomer(int customerId);
-    void AddCustomer(Customer customer);
+    Task<IReadOnlyCollection<Customer>> GetCustomers();
+    void AddCustomer(AddCustomerRequest customer);
+    Task UpdateCustomer(UpdateCustomerRequest request);
 }

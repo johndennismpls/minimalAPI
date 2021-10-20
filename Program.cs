@@ -26,12 +26,19 @@ if(!builder.Environment.IsProduction())
 //routes
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/customer", (ICustomerService customerService, int id) => {
+app.MapGet("/customer/{id}", (ICustomerService customerService, int id) => {
     return customerService.GetCustomer(id);
 });
+app.MapGet("/customer", (ICustomerService customerService) => {
+    return customerService.GetCustomers();
+});
 
-app.MapPost("/customer", (ICustomerService customerService, Customer id) => {
-    return customerService.AddCustomer(id);
+app.MapPost("/customer", (ICustomerService customerService, AddCustomerRequest request) => {
+    return customerService.AddCustomer(request);
+});
+
+app.MapPut("/customer", (ICustomerService customerService, UpdateCustomerRequest request) => {
+    return customerService.UpdateCustomerAsync(request);
 });
 
 

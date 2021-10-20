@@ -1,6 +1,8 @@
 public interface ICustomerService
 {
     Task<Customer> GetCustomer(int customerId);
-    Task AddCustomer(Customer customer);
+    Task AddCustomer(AddCustomerRequest customer);
+    Task<IReadOnlyCollection<Customer>> GetCustomers();
+    Task UpdateCustomerAsync(UpdateCustomerRequest request);
 
 }

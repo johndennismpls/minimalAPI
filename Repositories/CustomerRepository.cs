@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class CustomerRepository : ICustomerRepository
 {
     MinimalApiDbContext _dbcontext;
@@ -9,12 +11,36 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<Customer> GetCustomer(int customerId)
     {
-        var customer = await _dbcontext.Customers.FindAsync(customerId);
+        var customer = await _dbcontext.Customers
+            .Include(c => c.CustomerAddresses)
+            .SingleOrDefaultAsync(c => c.CustomerId == customerId);            
         return customer;
     }
 
-    public void AddCustomer(Customer customer)
+    public async Task<IReadOnlyCollection<Customer>> GetCustomers()
     {
-        _dbcontext.Add(customer);
+        var customers = await _dbcontext
+            .Customers
+            .Include(c => c.CustomerAddresses)
+            .ToListAsync();
+        return customers;
+    }
+
+    public void AddCustomer(AddCustomerRequest request)
+    {
+        var customer = new Customer{
+            FamilyName = request.FamilyName,
+            GivenName = request.GivenName
+        };
+        _dbcontext.Customers.Add(customer);
+    }
+
+    public async Task UpdateCustomer(UpdateCustomerRequest request)
+    {
+        var customerToUpdate = await GetCustomer(request.CustomerId);
+        _dbcontext
+            .Entry(customerToUpdate)
+            .CurrentValues
+            .SetValues(request);
     }
 }
